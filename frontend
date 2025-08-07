@@ -1,0 +1,341 @@
+import React, { useState } from 'react';
+
+// Common Header component for all pages
+const Header = () => (
+    // Removed mb-8 from header to fix the large space between header and main content.
+    <header className="flex flex-col w-full max-w-2xl mx-auto p-4">
+      <div className="flex items-center justify-between w-full mb-4">
+        <div className="flex items-center space-x-2">
+          {/* Cal Poly SLO Logo */}
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="48" fill="#D4B04C" stroke="#005022" strokeWidth="4"/>
+            <path fill="#005022" d="M30 75 L30 50 Q40 40 50 50 T70 25 L70 75 Q60 85 50 75 Z"/>
+            <path fill="#D4B04C" d="M35 70 L35 55 Q45 45 50 50 T65 30 L65 70 Q55 80 50 70 Z"/>
+          </svg>
+          {/* Horizontal text for the logo name */}
+          <h1 className="text-2xl font-bold text-[#005022] tracking-wider whitespace-nowrap">
+            CAL POLY SLO - FREIGHT SHIPPING
+          </h1>
+        </div>
+        <div className="flex items-center space-x-2">
+          <input type="text" placeholder="Search..." className="hidden md:block border border-gray-300 rounded-full px-4 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-[#D4B04C]" />
+          <button className="text-[#005022] p-2 rounded-full hover:bg-gray-200 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <nav className="flex justify-between items-center w-full text-[#005022] font-semibold">
+        <div className="flex-1"></div> {/* Spacer to push nav links to the right */}
+        <div className="flex space-x-6">
+          <a href="#" className="hover:text-[#D4B04C] transition-colors duration-300">Shipping</a>
+          <a href="#" className="hover:text-[#D4B04C] transition-colors duration-300">Tracking</a>
+          <a href="#" className="hover:text-[#D4B04C] transition-colors duration-300">Services</a>
+        </div>
+        <div className="flex-1 md:hidden"></div> {/* Spacer for mobile */}
+      </nav>
+      <button className="md:hidden text-[#005022] p-2 mt-4">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </header>
+  );
+
+// Common Footer component for all pages
+const Footer = () => (
+    <footer className="bg-[#005022] text-white p-8 w-full font-inter">
+      {/* Logos are now here and are clickable links */}
+      <div className="container mx-auto flex justify-around w-full max-w-2xl mb-8">
+        <a href="https://www.dhl.com" target="_blank" rel="noopener noreferrer" className="transition-transform duration-300 hover:scale-110">
+          <img src="http://googleusercontent.com/file_content/4" alt="DHL Logo" className="h-10 rounded-md bg-white p-2" />
+        </a>
+        <a href="https://www.fedex.com" target="_blank" rel="noopener noreferrer" className="transition-transform duration-300 hover:scale-110">
+          <img src="http://googleusercontent.com/file_content/3" alt="FedEx Logo" className="h-10 rounded-md bg-white p-2" />
+        </a>
+        <a href="https://www.ups.com" target="_blank" rel="noopener noreferrer" className="transition-transform duration-300 hover:scale-110">
+          <img src="http://googleusercontent.com/file_content/1" alt="UPS Logo" className="h-10 rounded-md bg-white p-2" />
+        </a>
+        <a href="https://www.usps.com" target="_blank" rel="noopener noreferrer" className="transition-transform duration-300 hover:scale-110">
+          <img src="http://googleusercontent.com/file_content/2" alt="USPS Logo" className="h-10 rounded-md bg-white p-2" />
+        </a>
+      </div>
+      <div className="container mx-auto flex flex-col md:flex-row justify-between max-w-2xl">
+        <div className="mb-4 md:mb-0">
+          <h4 className="font-bold mb-2 text-[#D4B04C]">Quick Links</h4>
+          <ul className="text-sm text-[#D4B04C]">
+            <li><a href="#" className="hover:underline">Shipping</a></li>
+            <li><a href="#" className="hover:underline">Tracking</a></li>
+            <li><a href="#" className="hover:underline">Services</a></li>
+          </ul>
+        </div>
+        <div className="mb-4 md:mb-0">
+          <h4 className="font-bold mb-2 text-[#D4B04C]">Contact</h4>
+          <ul className="text-sm text-[#D4B04C]">
+            <li><a href="#" className="hover:underline">About Cal Poly Freight Shipping</a></li>
+            <li><a href="#" className="hover:underline">Supplier Diversity</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="font-bold mb-2 text-[#D4B04C]">FAQs</h4>
+          <ul className="text-sm text-[#D4B04C]">
+            <li><a href="#" className="hover:underline">...</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  );
+
+
+// The main application component that manages the page state
+const App = () => {
+  // Use a state variable to track the current page, initialized to 'landing'
+  const [page, setPage] = useState('landing');
+  // Use a state variable to highlight a selected shipping option
+  const [selectedShipping, setSelectedShipping] = useState('fedex3-4');
+  // State to control the visibility of the confirmation modal
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  // Function to navigate to a new page
+  const navigateTo = (nextPage) => {
+    setPage(nextPage);
+  };
+
+  // Function to handle the selection of a shipping option and show the confirmation modal
+  const handleShippingSelect = (option) => {
+    setSelectedShipping(option);
+    setShowConfirmation(true); // Show confirmation modal
+  };
+
+  // Function to handle the confirmation and navigate to the payment page
+  const handleConfirmation = () => {
+    setShowConfirmation(false); // Close the modal
+    navigateTo('payment'); // Navigate to the payment page
+  };
+
+  // New first page: Landing with "Ship Now" and "Get a Quote" options
+  const LandingPage = () => (
+    // The main container for the entire landing page
+    <div className="flex flex-col items-center bg-[#fcfaf5] min-h-screen font-inter">
+      <Header />
+      {/* The main content area with a gold background to draw the eye */}
+      <main className="flex-grow flex flex-col items-center justify-center w-full bg-[#D4B04C]/30 p-8">
+        <div className="bg-white p-12 rounded-3xl shadow-2xl w-full max-w-2xl transform transition-all duration-500 ease-in-out">
+          <h2 className="text-4xl font-extrabold text-[#005022] mb-2 text-center">Your freight, delivered with confidence.</h2>
+          <p className="text-gray-600 mb-8 text-center text-lg">Choose a fast and reliable way to ship your freight. We handle the heavy lifting for you.</p>
+          <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6 w-full">
+            <button
+              onClick={() => navigateTo('ship-now-confirm')}
+              className="flex-1 flex flex-col items-center justify-center space-y-3 bg-[#005022] text-white p-8 rounded-2xl shadow-xl hover:bg-[#00662d] transition-colors duration-300 transform hover:scale-105"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span className="font-bold text-xl">Ship Now</span>
+            </button>
+            <button className="flex-1 flex flex-col items-center justify-center space-y-3 bg-[#ccd4d3] text-gray-800 p-8 rounded-2xl shadow-xl hover:bg-[#b0c0c0] transition-colors duration-300 transform hover:scale-105">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <span className="font-bold text-xl">Get a Quote</span>
+            </button>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+
+  // New second page: Confirming "Ship Now"
+  const ShipNowConfirmPage = () => (
+    <div className="flex flex-col items-center bg-[#fcfaf5] min-h-screen font-inter">
+      <Header />
+      <main className="flex-grow flex flex-col items-center justify-center p-8 w-full">
+        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg mb-8">
+          <h2 className="text-2xl font-extrabold text-[#005022] mb-6 text-center">Confirm your shipping choice</h2>
+          <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 w-full">
+            <div className="flex-1 flex flex-col items-center justify-center space-y-2 bg-[#D4B04C] border-4 border-[#005022] text-[#005022] p-6 rounded-xl shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span className="font-bold text-lg">Ship Now</span>
+            </div>
+            <div className="flex-1 flex flex-col items-center justify-center space-y-2 bg-[#ccd4d3] text-gray-800 p-6 rounded-xl shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              <span className="font-semibold text-lg">Get a Quote</span>
+            </div>
+          </div>
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={() => navigateTo('date')}
+              className="bg-[#005022] text-white px-12 py-4 rounded-full font-bold shadow-xl hover:bg-[#00662d] transition-colors duration-300 transform hover:scale-105"
+            >
+              Continue &gt;
+            </button>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+
+  // Component for the third page: Estimated Shipping Date
+  const EstimatedShippingDate = () => (
+    <div className="flex flex-col items-center bg-[#fcfaf5] min-h-screen font-inter">
+      <Header />
+      <main className="flex-grow flex flex-col items-center justify-center p-8 w-full">
+        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg mb-8">
+          <h2 className="text-2xl font-extrabold text-[#005022] mb-6 text-center">Estimated Shipping Date</h2>
+          <div className="flex flex-col w-full justify-between items-center mb-8">
+            <label htmlFor="shipping-date" className="text-md font-medium text-gray-600 mb-2">Select your shipping date:</label>
+            <select id="shipping-date" className="p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-4 focus:ring-[#D4B04C] focus:border-[#D4B04C] w-full text-center">
+              <option>Friday, August 12 - Latest by the end of the day</option>
+            </select>
+          </div>
+          <div className="flex flex-wrap justify-center gap-4 w-full mb-8">
+            <button className="px-6 py-3 border-2 border-gray-300 rounded-full text-gray-700 font-semibold hover:bg-gray-100 transition-colors duration-300">Email Quote</button>
+            <button className="px-6 py-3 border-2 border-gray-300 rounded-full text-gray-700 font-semibold hover:bg-gray-100 transition-colors duration-300">Copy Link</button>
+            <button className="px-6 py-3 border-2 border-gray-300 rounded-full text-gray-700 font-semibold hover:bg-gray-100 transition-colors duration-300">Print Quote</button>
+          </div>
+          <div className="flex justify-center">
+            <button
+              onClick={() => navigateTo('price')}
+              className="bg-[#005022] text-white px-12 py-4 rounded-full font-bold shadow-xl hover:bg-[#00662d] transition-colors duration-300 transform hover:scale-105"
+            >
+              Continue &gt;
+            </button>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+
+  // Component for the fourth page: Estimated Shipping Price
+  const EstimatedShippingPrice = () => (
+    <div className="flex flex-col items-center bg-[#fcfaf5] min-h-screen relative font-inter">
+      <Header />
+      <main className="flex-grow flex flex-col items-center justify-center p-8 w-full">
+        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg mb-8">
+          <h2 className="text-2xl font-extrabold text-[#005022] mb-6 text-center">Estimated Price</h2>
+          <div className="flex justify-around w-full mb-8">
+            <img src="http://googleusercontent.com/file_content/4" alt="DHL Logo" className="h-10 rounded-md bg-white p-2" />
+            <img src="http://googleusercontent.com/file_content/3" alt="FedEx Logo" className="h-10 rounded-md bg-white p-2" />
+            <img src="http://googleusercontent.com/file_content/1" alt="UPS Logo" className="h-10 rounded-md bg-white p-2" />
+            <img src="http://googleusercontent.com/file_content/2" alt="USPS Logo" className="h-10 rounded-md bg-white p-2" />
+          </div>
+          <div className="w-full space-y-4">
+            <div
+              className={`flex justify-between items-center p-6 rounded-xl cursor-pointer transition-all duration-300 shadow-md ${
+                selectedShipping === 'fedex3-4' ? 'bg-[#D4B04C] border-4 border-[#005022] transform scale-105' : 'bg-[#ccd4d3] hover:bg-[#b0c0c0]'
+              }`}
+              onClick={() => handleShippingSelect('fedex3-4')}
+            >
+              <span className={`font-bold text-lg ${selectedShipping === 'fedex3-4' ? 'text-[#005022]' : 'text-gray-700'}`}>FedEx</span>
+              <span className={`text-md ${selectedShipping === 'fedex3-4' ? 'text-gray-800' : 'text-gray-600'}`}>3 - 4 Days</span>
+              <span className={`font-bold text-lg ${selectedShipping === 'fedex3-4' ? 'text-[#005022]' : 'text-gray-700'}`}>$150.00</span>
+            </div>
+            <div
+              className={`flex justify-between items-center p-6 rounded-xl shadow-md cursor-pointer transition-all duration-300 bg-[#ccd4d3] hover:bg-[#b0c0c0]`}
+              onClick={() => handleShippingSelect('fedex1-2')}
+            >
+              <span className="font-bold text-lg text-gray-700">FedEx</span>
+              <span className="text-md text-gray-600">1 - 2 Days</span>
+              <span className="font-bold text-lg text-gray-700">$180.00</span>
+            </div>
+            <div
+              className={`flex justify-between items-center p-6 rounded-xl shadow-md cursor-pointer transition-all duration-300 bg-[#ccd4d3] hover:bg-[#b0c0c0]`}
+              onClick={() => handleShippingSelect('fedexOvernight')}
+            >
+              <span className="font-bold text-lg text-gray-700">FedEx</span>
+              <span className="text-md text-gray-600">Overnight</span>
+            </div>
+          </div>
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={() => handleShippingSelect(selectedShipping)}
+              className="bg-[#005022] text-white px-12 py-4 rounded-full font-bold shadow-xl hover:bg-[#00662d] transition-colors duration-300 transform hover:scale-105"
+            >
+              Continue &gt;
+            </button>
+          </div>
+        </div>
+      </main>
+
+      {/* Confirmation Modal */}
+      {showConfirmation && (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-2xl shadow-xl text-center max-w-sm w-full font-inter">
+            <p className="text-xl font-extrabold mb-6 text-[#005022]">Confirm your shipping selection?</p>
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={handleConfirmation}
+                className="bg-[#005022] text-white px-8 py-3 rounded-full font-bold hover:bg-[#00662d] transition-colors duration-300"
+              >
+                Confirm
+              </button>
+              <button
+                onClick={() => setShowConfirmation(false)}
+                className="bg-gray-300 text-gray-800 px-8 py-3 rounded-full font-bold hover:bg-gray-400 transition-colors duration-300"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Footer />
+    </div>
+  );
+
+  // Component for payment
+  const PaymentMethod = () => (
+    <div className="flex flex-col items-center bg-[#fcfaf5] min-h-screen relative font-inter">
+      <Header />
+      <main className="flex-grow flex flex-col items-center justify-center p-8 w-full">
+        <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg mb-8">
+          <h2 className="text-2xl font-extrabold text-[#005022] mb-6 text-center">Payment Method</h2>
+          <p className="text-center text-gray-600 mb-6">Select a payment option</p>
+          <div className="flex flex-col space-y-4">
+            <button className="flex items-center justify-between p-4 border-2 border-gray-300 rounded-xl hover:bg-gray-100 transition-colors duration-300">
+              <span className="font-semibold text-lg">Pay with Card</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+            </button>
+            <button className="flex items-center justify-between p-4 border-2 border-gray-300 rounded-xl hover:bg-gray-100 transition-colors duration-300">
+              <span className="font-semibold text-lg">Pay with PayPal</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zM8.136 17.65c-.17-.11-.278-.292-.278-.492v-3.8c0-.204.108-.386.278-.496l4.242-2.45c.168-.096.37-.156.592-.156s.424.06.592.156l4.242 2.45c.17.11.278.292.278.496v3.8c0 .2-.108.382-.278.492l-4.242 2.45c-.168.096-.37.156-.592.156s-.424-.06-.592-.156L8.136 17.65zM12 21.05c-3.116 0-5.65-2.534-5.65-5.65v-6.8c0-3.116 2.534-5.65 5.65-5.65s5.65 2.534 5.65 5.65v6.8c0 3.116-2.534 5.65-5.65 5.65z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+
+
+  // Render the appropriate page based on the 'page' state
+  switch (page) {
+    case 'ship-now-confirm':
+      return <ShipNowConfirmPage />;
+    case 'date':
+      return <EstimatedShippingDate />;
+    case 'price':
+      return <EstimatedShippingPrice />;
+    case 'payment':
+      return <PaymentMethod />;
+    case 'landing':
+    default:
+      return <LandingPage />;
+  }
+};
+
+export default App;
+
